@@ -3,10 +3,10 @@ This is a super simple mod loader for OMORI. Installation instructions + modding
 
 ## Installation
 ### Installing the mod loader
-1. Download **Gilbert's Mod Loader.zip** from the [releases page](https://github.com/GilbertGobbels/gomori/releases).
+1. Download **GOMORI.zip** from the [releases page](https://github.com/GilbertGobbels/gomori/releases).
 2. Right-click OMORI in your steam library, select properties.
 3. Go to Local Files, then hit BROWSE...
-4. Extract **Gilbert's Mod Loader.zip** in this folder. **Some ZIP extractors create a new folder when extracting; make sure the `www` folder in the zip file is extracted directly into the game folder!**
+4. Extract **GOMORI.zip** in this folder. **Some ZIP extractors create a new folder when extracting; make sure the `www` folder in the zip file is extracted directly into the game folder!**
 5. When asked to overwrite files, select YES.
 6. Start OMORI. You should now see a *mods* section in your game options.
 
