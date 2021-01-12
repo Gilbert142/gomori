@@ -24,6 +24,7 @@ class ModFile {
 	build() {
 		this.decryptedBuffer = this.read();
 		if (this.type.encrypted) this.encryptedBuffer = encrypt(this.decryptedBuffer, this.unpatchedEncryptedBuffer);
+		else this.encryptedBuffer = this.decryptedBuffer;
 	}
 
 	patch() {
