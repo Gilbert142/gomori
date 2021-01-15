@@ -10,7 +10,7 @@ function encryptBuffer (buf, iv) {
 }
 
 function encrypt(data, encryptedData) {
-	const iv = encryptedData.slice(0, 16);
+	const iv = encryptedData ? encryptedData.slice(0, 16) : Buffer.alloc(16);
 	return encryptBuffer(data, iv);
 }
 
