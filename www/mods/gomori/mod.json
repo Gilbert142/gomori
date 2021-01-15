@@ -2,7 +2,7 @@
   "id": "gomori",
   "name": "Gilbert's Mod Loader",
   "description": "Gilbert's Mod Loader",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "files": {
     "plugins": [
       "Omori Main Menu - Scene Options.js",
