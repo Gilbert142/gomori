@@ -1,3 +1,3 @@
-const defaultConfig = { gomori: true };
+const defaultConfig = { gomori: true, _basilFiles: [] };
 
 module.exports = { defaultConfig };
