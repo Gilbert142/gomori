@@ -4,7 +4,7 @@ let $modLoader = null;
 	try {
 		const ModLoader = require("./gomori/lib/ModLoader");
 
-		const modLoader = new ModLoader();
+		const modLoader = new ModLoader(window.$plugins);
 		$modLoader = modLoader;
 
 		modLoader.loadMods();
