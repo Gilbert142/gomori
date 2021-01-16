@@ -18,8 +18,12 @@ function remove (filePath) {
 	return fs.unlinkSync(path.resolve(base, filePath));
 }
 
+function isDir (dirPath) {
+	return fs.lstatSync(path.resolve(base, dirPath)).isDirectory();
+}
+
 function readDir (dirPath) {
 	return fs.readdirSync(path.resolve(base, dirPath));
 }
 
-module.exports = { read, write, exists, remove, readDir };
+module.exports = { read, write, exists, remove, isDir, readDir };
