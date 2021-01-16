@@ -15,6 +15,7 @@ class ModLoader {
 		for (const modDir of mods) {
 			const isZip = modDir.endsWith(".zip");
 			const id = modDir.replace(".zip", "");
+			if (id.startsWith("_")) continue;
 
 			if (this.mods.has(id)) {
 				alert(`Cannot load mod "${modDir}" for having a conflicting ID.`);
@@ -37,10 +38,21 @@ class ModLoader {
 		}
 	}
 
+	unpatchMods() {
+		for (const file of this.config._basilFiles) {
+			if (!exists(file)) continue;
+
+			const basilBuf = read(file);
+			write(file.replace(".BASIL", ""), basilBuf);
+		}
+
+		this.config._basilFiles = [...this.conflictFiles].map(file => `${file}.BASIL`);
+		write("save/mods.json", JSON.stringify(this.config));
+	}
+
 	patchMods() {
 		for (const mod of this.mods.values()) {
 			try {
-				mod.unpatch();
 				if (this.config[mod.id] !== false) mod.patch();
 			} catch (err) {
 				alert(`Failed to patch mod "${mod.id}": ${err.stack}`);
@@ -59,6 +71,7 @@ class ModLoader {
 
 		if (!exists("save/mods.json")) write("save/mods.json", JSON.stringify(defaultConfig));
 		this._config = JSON.parse(read("save/mods.json").toString());
+		if (!this._config._basilFiles) this._config._basilFiles = [];
 		return this._config;
 	}
 }

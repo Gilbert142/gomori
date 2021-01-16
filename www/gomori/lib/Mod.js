@@ -36,7 +36,8 @@ class Mod {
 		const modFile = new ModFile(this, path, type);
 		modFile.build();
 		this.files.set(modFile.patchPath, modFile);
-		if (this.modLoader.fileConflictCheck(modFile.patchPath)) throw new Error(`Failed to build mod ${this.id} due to conflicted file ${path}.`);
+		if (this.enabled && type.conflicts === true && this.modLoader.fileConflictCheck(modFile.patchPath))
+			throw new Error(`Failed to build mod ${this.id} due to conflicted file ${path}.`);
 	}
 
 	unpatch() {
@@ -49,6 +50,10 @@ class Mod {
 		for (const modFile of this.files.values()) {
 			modFile.patch();
 		}
+	}
+
+	get enabled() {
+		return this.modLoader.config[this.id] !== false;
 	}
 
 	_loadZip() {
