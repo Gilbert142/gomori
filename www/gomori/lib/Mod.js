@@ -1,7 +1,7 @@
 const AdmZip = require("../../adm-zip-0.5.1/adm-zip");
 
 const { FILE_TYPE_MAP } = require("../constants/filetypes");
-const { read } = require("../utils/fs");
+const { read, isDir, readDir } = require("../utils/fs");
 const ModFile = require("./ModFile");
 
 class Mod {
@@ -27,8 +27,31 @@ class Mod {
 			const files = this.meta.files[type];
 			if (!files) continue;
 			for (const file of files) {
-				this.buildFile(file, fileType);
+				if (file.endsWith("/")) this.buildDir(file, fileType);
+				else this.buildFile(file, fileType);
 			}
+		}
+	}
+
+	buildDir(path, type) {
+		if (this.isZip) return this.buildZipDir(path, type);
+
+		const files = readDir(`mods/${this.id}/${path}`);
+		for (const file of files) {
+			if (isDir(`mods/${this.id}/${path}${file}`)) continue;
+			this.buildFile(`${path}${file}`, type);
+		}
+	}
+
+	buildZipDir(path, type) {
+		path = `${this.id}/${path}`;
+		const entries = this.zip.getEntries()
+			.filter(({ entryName }) => {
+				// Filter for children of dir and exclude deeper dirs to avoid recursive lookup
+				return entryName.startsWith(path) && !entryName.replace(path, "").includes("/") && entryName !== path;
+			});
+		for (const { entryName } of entries) {
+			this.buildFile(entryName.replace(`${this.id}/`, ""), type);
 		}
 	}
 
