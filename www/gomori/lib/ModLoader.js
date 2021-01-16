@@ -3,7 +3,8 @@ const { defaultConfig } = require("../constants/defaults");
 const { exists, read, write, readDir } = require("../utils/fs");
 
 class ModLoader {
-	constructor() {
+	constructor(plugins) {
+		this.plugins = plugins;
 		this.conflictFiles = new Set();
 		this.mods = new Map();
 		this._config = null;

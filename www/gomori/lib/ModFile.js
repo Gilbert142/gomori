@@ -29,6 +29,7 @@ class ModFile {
 
 	patch() {
 		if (this.type.patch && exists(this.patchPath)) write(this.basilPath, this.unpatchedEncryptedBuffer);
+		if (this.type.encrypted === "OMORI" && !this.mod.modLoader.plugins.some(({ name }) => name === this.pluginMeta.name)) this.mod.modLoader.plugins.push(this.pluginMeta);
 		if (this.type.patch) write(this.patchPath, this.encryptedBuffer);
 		if (this.type.require) {
 			try {
@@ -56,6 +57,15 @@ class ModFile {
 		if (!this.isPatched) return;
 		write(this.patchPath, this.unpatchedEncryptedBuffer);
 		this.isPatched = false;
+	}
+
+	get pluginMeta() {
+		return {
+			name: this.fileName.replace(`.${this.type.decrypted}`, ""),
+			status: true,
+			description: `Patched by GOMORI | Plugin file for mod "${this.mod.id}"`,
+			parameters: {},
+		}
 	}
 
 	get fileName() {
