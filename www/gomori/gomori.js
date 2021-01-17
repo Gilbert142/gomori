@@ -6,7 +6,7 @@ let $modLoader = null;
 
 		const modLoader = new ModLoader(window.$plugins);
 		$modLoader = modLoader;
-
+		modLoader.injectCode(window);
 		/*
 		 * The mod loader takes every mod through 4 stages; loading -> building -> unpatching -> patching.
 		 * The loading stage is responsible for registering the available mods and loading their metadata into the mod loader.
