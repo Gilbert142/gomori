@@ -1,13 +1,58 @@
 const Mod = require("./Mod");
 const { defaultConfig } = require("../constants/defaults");
 const { exists, read, write, readDir } = require("../utils/fs");
+const { decryptBuffer } = require("../utils/encryption");
+
+const fs = require("fs");
+const path = require("path");
 
 class ModLoader {
 	constructor(plugins) {
 		this.plugins = plugins;
 		this.conflictFiles = new Set();
+		this.deltaFiles = new Set();
 		this.mods = new Map();
 		this._config = null;
+		this.deltaPlugins = new Map();
+	}
+	/**
+	 * 
+	 * @param window The global window object, which is only accessible from root scripts, and not from modules. We need this to do the code injection.
+	 */
+	injectCode(window) {
+		//These are code overrides, which are used for injecting delta patches into plugins
+		const modLoader = this;
+		const doc = window.document;
+		window.PluginManager = class extends window.PluginManager {
+			static loadScript(name) {
+				try {
+				if(name.includes("vorbis")) {return super.loadScript(name)}
+				name = name.replace(".js", ".OMORI").replace(".JS", ".OMORI");
+				var base = path.dirname(process.mainModule.filename);
+				let buff = fs.readFileSync(base + "/" + this._path + name);
+				var url = this._path + name;
+				var script = doc.createElement('script');
+				script.type = 'text/javascript';
+
+				//Delta loading code
+				let delta = "\n";
+				{
+					const fullPath = this._path + name.replace(".js", ".OMORI").replace(".JS", ".OMORI");
+					if (modLoader.deltaPlugins.has(fullPath)) {
+						for (const patch of modLoader.deltaPlugins.get(fullPath)) {
+							delta += patch.read().toString() + "\n";
+						}
+					}
+				}
+
+				script.innerHTML = decryptBuffer(buff).toString() + delta;
+				script._url = url;
+				doc.body.appendChild(script);
+				} catch (err) {
+					alert(`${err.stack}`);
+				}
+			}
+		}
 	}
 
 	loadMods() {
@@ -62,9 +107,19 @@ class ModLoader {
 
 	fileConflictCheck(filePath) {
 		if (this.conflictFiles.has(filePath)) return true;
+		if (this.deltaFiles.has(filePath)) return true;
 		this.conflictFiles.add(filePath);
 		return false;
 	}
+
+	fileConflictCheckDelta(filePath) {
+		if (this.conflictFiles.has(filePath)) return true;
+		if (!this.deltaFiles.has(filePath)) {
+			this.deltaFiles.add(filePath);
+		}
+		return false;
+	}
+
 
 	get config() {
 		if (this._config) return this._config;

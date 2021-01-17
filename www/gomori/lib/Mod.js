@@ -59,7 +59,9 @@ class Mod {
 		const modFile = new ModFile(this, path, type);
 		modFile.build();
 		this.files.set(modFile.patchPath, modFile);
-		if (this.enabled && type.conflicts === true && this.modLoader.fileConflictCheck(modFile.patchPath))
+		if (this.enabled && 
+			((type.conflicts === true && this.modLoader.fileConflictCheck(modFile.patchPath))
+			||(type.delta === true && this.modLoader.fileConflictCheckDelta(modFile.patchPath))))
 			throw new Error(`Failed to build mod ${this.id} due to conflicted file ${path}.`);
 	}
 
