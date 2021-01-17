@@ -14,4 +14,12 @@ function encrypt(data, encryptedData) {
 	return encryptBuffer(data, iv);
 }
 
-module.exports = { encryptBuffer, encrypt };
+function decryptBuffer(encryptedBuffer) {
+	const iv = encryptedBuffer.slice(0,16);
+	encryptedBuffer = encryptedBuffer.slice(16);
+	const decipher = crypto.createDecipheriv(ALGORITHM, KEY, iv);
+	const buffer = Buffer.concat([decipher.update(encryptedBuffer), decipher.final()]);
+	return buffer;
+}
+
+module.exports = { encryptBuffer, encrypt, decryptBuffer};

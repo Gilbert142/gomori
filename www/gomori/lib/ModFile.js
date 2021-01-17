@@ -1,6 +1,6 @@
-const { encrypt } = require("../utils/encryption");
+const { encrypt, decryptBuffer } = require("../utils/encryption");
 const { read, write, exists, remove } = require("../utils/fs");
-
+const { deltaPatchYml, deltaPatchJson } = require("../utils/delta");
 class ModFile {
 	constructor(mod, path, type) {
 		this.mod = mod;
@@ -23,14 +23,52 @@ class ModFile {
 
 	build() {
 		this.decryptedBuffer = this.read();
+		//Delta files don't get built, because that needs to be done during patch time.
+		if (!this.type.delta) {
+			this._buildSimple();
+		} else {
+			this._buildDelta();
+		}
+	}
+
+	_buildSimple() {
 		if (this.type.encrypted) this.encryptedBuffer = encrypt(this.decryptedBuffer, this.unpatchedEncryptedBuffer);
 		else this.encryptedBuffer = this.decryptedBuffer;
+	}
+
+	_buildDelta() {
+		if (this.type.decrypted == "jsd") {
+			const deltaMap = this.mod.modLoader.deltaPlugins;
+			if (!deltaMap.has(this.patchPath)) {
+				deltaMap.set(this.patchPath, new Set());
+			}
+			deltaMap.get(this.patchPath).add(this);
+		}
+	}
+
+	_patchDelta() {
+		if (this.type.decrypted == "jsd") {
+			return;
+			//No need to patch .jsd files, it's done during plugin load time.
+		} else if (this.type.decrypted == "ymld") {
+			this.decryptedBuffer = deltaPatchYml(this.decryptedBuffer, decryptBuffer(this.probablyPatchedEncryptedBuffer));
+		} else if (this.type.decrypted == "jsond") {
+			this.decryptedBuffer = deltaPatchJson(this.decryptedBuffer, decryptBuffer(this.probablyPatchedEncryptedBuffer));
+		} else {
+			throw new Error(`Failed to patch file "${this.path}" for mod "${this.mod.id}": Unsupported delta file type "${this.type.decrypted}".`);
+		}
+		this.encryptedBuffer = encrypt(this.decryptedBuffer)
 	}
 
 	patch() {
 		if (this.type.patch && exists(this.patchPath)) write(this.basilPath, this.unpatchedEncryptedBuffer);
 		if (this.type.encrypted === "OMORI" && !this.mod.modLoader.plugins.some(({ name }) => name === this.pluginMeta.name)) this.mod.modLoader.plugins.push(this.pluginMeta);
-		if (this.type.patch) write(this.patchPath, this.encryptedBuffer);
+		if (this.type.patch) {
+			if (this.type.delta) {
+				this._patchDelta();
+			}
+			write(this.patchPath, this.encryptedBuffer);
+		}
 		if (this.type.require) {
 			try {
 				const func = this.require();
@@ -88,6 +126,15 @@ class ModFile {
 
 	get unpatchedEncryptedBuffer() {
 		const path = this.isPatched ? this.basilPath : this.patchPath;
+		if (!exists(path)) return null;
+		return read(path);
+	}
+
+	/**
+	 * @returns The file currently present in the game's folder. This is ONLY used for DELTA patching, and SHOULD NOT used be anywhere else for stability reasons.
+	 */
+	get probablyPatchedEncryptedBuffer() {
+		const path = this.patchPath;
 		if (!exists(path)) return null;
 		return read(path);
 	}
