@@ -91,7 +91,7 @@ class ModLoader {
 			write(file.replace(".BASIL", ""), basilBuf);
 		}
 
-		this.config._basilFiles = [...this.conflictFiles].map(file => `${file}.BASIL`);
+		this.config._basilFiles = [...this.conflictFiles].map(file => `${file}.BASIL`).concat([...this.deltaFiles].map(file=> `${file}.BASIL`));
 		write("save/mods.json", JSON.stringify(this.config));
 	}
 
