@@ -1,5 +1,5 @@
-const {applyPatch} = require("../../JSON-Patch-3.0.0/index")
-const YAML = require("../../js/libs/js-yaml-master/index")
+const { applyPatch } = require("../../JSON-Patch-3.0.0/index");
+const YAML = require("../../js/libs/js-yaml-master/index");
 
 function deltaPatchYml(patchData, currentData) {
     const patch = JSON.parse(patchData);
@@ -15,4 +15,4 @@ function deltaPatchJson(patchData, currentData) {
     return JSON.stringify(document);
 }
 
-module.exports = {deltaPatchYml, deltaPatchJson}
+module.exports = { deltaPatchYml, deltaPatchJson };

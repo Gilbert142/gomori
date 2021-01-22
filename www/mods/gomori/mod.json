@@ -6,6 +6,11 @@
   "files": {
     "plugins": [
       "scripts/"
-    ]
+    ],
+    "text": [],
+    "data": [],
+    "maps": [],
+    "assets": [],
+    "exec": []
   }
 }
