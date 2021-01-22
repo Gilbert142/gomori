@@ -20,7 +20,7 @@ This is a super simple mod loader for OMORI. Installation instructions + modding
 ## Making mods
 1. Once you've edited decrypted game files, add them to your mod folder.
 2. In order for the modloader to load your mod files, you need to register them in your mod metadata file. Create a mod metadata file called **mod.json**. For a reference file, check out [mods/gomori/mod.json](https://github.com/GilbertGobbels/gomori/blob/master/www/mods/gomori/mod.json).
-3. Register files by adding their paths, relative to the mod folder as root, to the correct files array.
+3. Register files by adding their paths, relative to the mod folder as root, to the correct files array. You may also register entire folders by suffixing a path with "/".
     * **plugins** are loaded to **/www/js/plugins**. They should have a **js** extension.
     * **text** files are loaded to **/www/languages/en**. They should have a **yml** extension.
     * **data** files are loaded to **/www/data**. They should have a **json** extension.
