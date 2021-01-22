@@ -1,6 +1,7 @@
 const { encrypt, decryptBuffer } = require("../utils/encryption");
 const { read, write, exists, remove } = require("../utils/fs");
 const { deltaPatchYml, deltaPatchJson } = require("../utils/delta");
+
 class ModFile {
 	constructor(mod, path, type) {
 		this.mod = mod;
@@ -24,11 +25,8 @@ class ModFile {
 	build() {
 		this.decryptedBuffer = this.read();
 		//Delta files don't get built, because that needs to be done during patch time.
-		if (!this.type.delta) {
-			this._buildSimple();
-		} else {
-			this._buildDelta();
-		}
+		if (!this.type.delta) this._buildSimple();
+		else this._buildDelta();
 	}
 
 	_buildSimple() {

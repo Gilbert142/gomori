@@ -15,8 +15,8 @@ class ModLoader {
 		this._config = null;
 		this.deltaPlugins = new Map();
 	}
+
 	/**
-	 * 
 	 * @param window The global window object, which is only accessible from root scripts, and not from modules. We need this to do the code injection.
 	 */
 	injectCode(window) {
