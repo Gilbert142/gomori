@@ -3,6 +3,7 @@ const AdmZip = require("../../adm-zip-0.5.1/adm-zip");
 const { FILE_TYPE_MAP } = require("../constants/filetypes");
 const { read, isDir, readDir } = require("../utils/fs");
 const ModFile = require("./ModFile");
+const AssetModFile = require("./AssetModFile");
 
 class Mod {
 	constructor(modLoader, id, isZip) {
@@ -56,10 +57,10 @@ class Mod {
 	}
 
 	buildFile(path, type) {
-		const modFile = new ModFile(this, path, type);
+		const modFile = type.asset ? new AssetModFile(this, path, type) : new ModFile(this, path, type);
 		modFile.build();
 		this.files.set(modFile.patchPath, modFile);
-		if (this.enabled && 
+		if (this.enabled &&
 			((type.conflicts === true && this.modLoader.fileConflictCheck(modFile.patchPath))
 			||(type.delta === true && this.modLoader.fileConflictCheckDelta(modFile.patchPath))))
 			throw new Error(`Failed to build mod ${this.id} due to conflicted file ${path}.`);

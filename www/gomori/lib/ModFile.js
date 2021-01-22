@@ -1,3 +1,4 @@
+const path = require("path");
 const { encrypt, decryptBuffer } = require("../utils/encryption");
 const { read, write, exists, remove } = require("../utils/fs");
 const { deltaPatchYml, deltaPatchJson } = require("../utils/delta");
@@ -24,7 +25,7 @@ class ModFile {
 
 	build() {
 		this.decryptedBuffer = this.read();
-		//Delta files don't get built, because that needs to be done during patch time.
+		// Delta files don't get built, because that needs to be done during patch time.
 		if (!this.type.delta) this._buildSimple();
 		else this._buildDelta();
 	}
@@ -79,7 +80,6 @@ class ModFile {
 	}
 
 	require() {
-		const path = require("path");
 		const base = path.dirname(process.mainModule.filename);
 
 		const tempFile = `exec.${this.mod.id}.${this.path.replace(/\//g, ".")}.js`;
@@ -102,6 +102,10 @@ class ModFile {
 			description: `Patched by GOMORI | Plugin file for mod "${this.mod.id}"`,
 			parameters: {},
 		}
+	}
+
+	get fileExtension() {
+		return path.extname(this.path).substring(1);
 	}
 
 	get fileName() {
