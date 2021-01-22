@@ -1,4 +1,5 @@
 const path = require("path");
+const { PROTECTED_FILES } = require("../constants/filetypes");
 const { encrypt, decryptBuffer } = require("../utils/encryption");
 const { read, write, exists, remove } = require("../utils/fs");
 const { deltaPatchYml, deltaPatchJson } = require("../utils/delta");
@@ -24,6 +25,8 @@ class ModFile {
 	}
 
 	build() {
+		if (this.type.patch && PROTECTED_FILES.includes(this.patchPath)) throw new Error(`Mod ${this.mod.id} attempted to patch protected file ${this.patchPath}`);
+
 		this.decryptedBuffer = this.read();
 		// Delta files don't get built, because that needs to be done during patch time.
 		if (!this.type.delta) this._buildSimple();

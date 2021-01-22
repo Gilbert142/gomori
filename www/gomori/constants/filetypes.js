@@ -28,4 +28,21 @@ const FILE_TYPE_MAP = {
 	maps_delta: { encrypted: "AUBREY", decrypted: "jsond", dir: "maps", conflicts: false, patch: true, delta: true },
 };
 
-module.exports = { FILE_TYPE_MAP };
+const PROTECTED_FILES = [
+	"js/libs/pixi.js",
+	"js/libs/pixi-tilemap.js",
+	"js/libs/pixi-picture.js",
+	"js/libs/lz-string.js",
+	"js/libs/iphone-inline-video.browser.js",
+	"js/rpg_core.js",
+	"js/rpg_managers.js",
+	"js/rpg_objects.js",
+	"js/rpg_scenes.js",
+	"js/rpg_sprites.js",
+	"js/rpg_windows.js",
+	"js/plugins.js",
+	"gomori/gomori.js",
+	"js/main.js",
+];
+
+module.exports = { FILE_TYPE_MAP, PROTECTED_FILES };
