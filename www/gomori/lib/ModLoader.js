@@ -7,13 +7,23 @@ const fs = require("fs");
 const path = require("path");
 
 class ModLoader {
-	constructor(plugins) {
+	constructor(plugins, Decrypter) {
 		this.plugins = plugins;
+		this.Decrypter = Decrypter;
+		this.assetEncryptionKey = null;
 		this.conflictFiles = new Set();
 		this.deltaFiles = new Set();
 		this.mods = new Map();
 		this._config = null;
 		this.deltaPlugins = new Map();
+	}
+
+	loadAssetEncryptionKey () {
+		const encryptedSystem = read("data/System.KEL");
+		const system = JSON.parse(decryptBuffer(encryptedSystem).toString());
+		const keyHexStrings = system.encryptionKey.split(/(.{2})/).filter(Boolean);
+		const keyBytes = keyHexStrings.map(hexString => parseInt(hexString, 16));
+		this.assetEncryptionKey = Buffer.from(keyBytes);
 	}
 
 	/**
