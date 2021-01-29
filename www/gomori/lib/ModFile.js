@@ -21,7 +21,7 @@ class ModFile {
 	}
 
 	_readZip() {
-		return this.mod.zip.getEntry(`${this.mod.id}/${this.path}`).getData();
+		return this.mod.zip.read(`${this.mod.id}/${this.path}`);
 	}
 
 	build() {

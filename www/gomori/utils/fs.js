@@ -26,4 +26,8 @@ function readDir (dirPath) {
 	return fs.readdirSync(path.resolve(base, dirPath));
 }
 
-module.exports = { read, write, exists, remove, isDir, readDir };
+function rename (source, target) {
+	return fs.renameSync(path.resolve(base, source), path.resolve(base, target));
+}
+
+module.exports = { read, write, exists, remove, isDir, readDir, rename};
