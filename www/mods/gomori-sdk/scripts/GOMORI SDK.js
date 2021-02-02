@@ -146,24 +146,8 @@ function decryptAllFiles() {
     } else {
         fs.mkdirSync(OUT_DIR);
 
-        [
-            'audio/',
-            'data/',
-            'img/',
-            'js/',
-            'languages/',
-            'maps/',
-            // these files do not need to be decrypted, but for the sake of everyone
-            // trying to mod the game, they get copied anyways
-            'fonts/',
-            'movies/',
-            'icon/',
-            // these files also do not need to be decrypted
-            'editor.json',
-            'index.html',
-            'package.json',
-            // I'm not even sure if this is useful for modding, but just in case...
-            'steam_appid.txt',
-        ].forEach(file => decryptFile(file));
+        fs.readdirSync(BASE_DIR).forEach(file => {
+            decryptFile(file);
+        });
     }
 }
