@@ -1,0 +1,14 @@
+{
+  "id": "gomori-sdk",
+  "name": "Gomori Developer SDK",
+  "description": "Tools for mod developers.",
+  "version": "0.1.0",
+  "files": {
+    "plugins": ["scripts/"],
+    "text": [],
+    "data": [],
+    "maps": [],
+    "assets": [],
+    "exec": []
+  }
+}
