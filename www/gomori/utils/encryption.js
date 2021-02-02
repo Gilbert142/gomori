@@ -31,4 +31,17 @@ function encryptAssetBuffer (buf, header, key) {
 	return encryptedBuffer;
 }
 
-module.exports = { encryptBuffer, encrypt, decryptBuffer, encryptAssetBuffer };
+function decryptSteam(data) {
+	// get initialization vectors
+	const iv = data.slice(0,16);
+
+	data = data.slice(16);
+
+	// create decipher
+	const decipher = crypto.createDecipheriv(ALGORITHM, KEY, iv);
+
+	// return decrypted data
+	return Buffer.concat([decipher.update(data), decipher.final()]);
+}
+
+module.exports = { encryptBuffer, encrypt, decryptBuffer, encryptAssetBuffer, decryptSteam };
