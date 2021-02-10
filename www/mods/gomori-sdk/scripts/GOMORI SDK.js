@@ -82,10 +82,10 @@ function decryptAllFiles() {
         switch (ext) {
             case '.KEL':
             case '.AUBREY':
-            case '.PLUTO':
                 return '.json';
+			case '.PLUTO':
             case '.HERO':
-                return '.yml';
+                return '.yaml';
             case '.OMORI':
                 return '.js';
             case '.rpgmvp':

@@ -52,7 +52,7 @@ class ModFile {
 		if (this.type.decrypted == "jsd") {
 			return;
 			//No need to patch .jsd files, it's done during plugin load time.
-		} else if (this.type.decrypted == "ymld") {
+		} else if (this.type.decrypted == "ymld" /*|| this.type.decrypted == "yamld" /*can there even be yamld? who knows!*/) {
 			this.decryptedBuffer = deltaPatchYml(this.decryptedBuffer, decryptBuffer(this.probablyPatchedEncryptedBuffer));
 		} else if (this.type.decrypted == "jsond") {
 			this.decryptedBuffer = deltaPatchJson(this.decryptedBuffer, decryptBuffer(this.probablyPatchedEncryptedBuffer));
