@@ -19,6 +19,7 @@ const FILE_TYPE_MAP = {
 	plugins: { encrypted: "OMORI", decrypted: "js", dir: "js/plugins", conflicts: true, patch: true, delta: false },
 	text: { encrypted: "HERO", decrypted: "yml", dir: "languages/en", conflicts: true, patch: true, delta: false },
 	data: { encrypted: "KEL", decrypted: "json", dir: "data", conflicts: true, patch: true, delta: false },
+	data_pluto: { encrypted: "PLUTO", decrypted: "yaml", dir: "data", conflicts: true, patch: true, delta: false },
 	maps: { encrypted: "AUBREY", decrypted: "json", dir: "maps", conflicts: true, patch: true, delta: false },
 	assets: { conflicts: true, patch: true, delta: false, map: { "png": "rpgmvp", "ogg": "rpgmvo" }, asset: true },
 	exec: { conflicts: false, require: true, patch: false },
