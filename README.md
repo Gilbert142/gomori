@@ -22,8 +22,8 @@ This is a simple mod loader for OMORI. Installation instructions + modding docum
 2. In order for the modloader to load your mod files, you need to register them in your mod metadata file. Create a mod metadata file called **mod.json**. For a reference file, check out [mods/gomori/mod.json](https://github.com/GilbertGobbels/gomori/blob/master/www/mods/gomori/mod.json).
 3. Register files by adding their paths, relative to the mod folder as root, to the correct files array. You may also register entire folders by suffixing a path with "/".
     * **plugins** are patched to **/www/js/plugins**. They should have a **js** extension. Plugin files that do not replace an existing plugin are loaded as new plugins at runtime.
-    * **text** files are patched to **/www/languages/en**. They should have a **yml** extension.
-    * **data** files are patched to **/www/data**. They should have a **json** extension.
+    * **text** files are patched to **/www/languages/en**. They should have a **yaml** extension.
+    * **data** files are patched to **/www/data**. They should have a **json** extension, except Atlas, Notes and Quests, which are **.yaml**.
     * **maps** files are patched to **/www/maps**. They should have a **json** extension.
     * **assets** files are patched to **/www/<path in mod folder>**. Files with a **png** or **ogg** extension are converted to **rpgmvp** and **rpgmvo** respectively. For example, **/img/characters/DW_OMORI.png** in the mod is patched to **/www/img/characters/DW_OMORI.rpgmvp** in the game directory.
     * **exec** files are patched and instantly executed while your mod is being built. They should have a **js** extension and have a function as module export.
