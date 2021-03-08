@@ -190,11 +190,6 @@ Window_OmoMenuOptionsMods.prototype.cursorRight = function(wrap) {
 	Window_Selectable.prototype.cursorRight.call(this, wrap);
 	// Get Data
 	var data = this._optionsList[this.index()];
-	// Get Data
-	if(this.index() === 0 && !Graphics._isFullScreen()) {
-		SoundManager.playBuzzer();
-		return;
-	}
 	if (data) {
 		// Set Data Index
 		data.index = (data.index + 1) % data.options.length;
@@ -212,11 +207,6 @@ Window_OmoMenuOptionsMods.prototype.cursorLeft = function(wrap) {
 	Window_Selectable.prototype.cursorLeft.call(this, wrap);
 	// Get Data
 	var data = this._optionsList[this.index()];
-	// Get Data
-	if(this.index() === 0 && !Graphics._isFullScreen()) {
-		SoundManager.playBuzzer();
-		return;
-	}
 	if (data) {
 		// Get Max Items
 		var maxItems = data.options.length;
