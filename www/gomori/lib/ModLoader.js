@@ -71,6 +71,9 @@ class ModLoader {
 			const isZip = modDir.endsWith(".zip");
 			const id = modDir.replace(".zip", "");
 			if (id.startsWith("_")) continue;
+			// Skip loading "mod" if its a file and not a zip
+			var base = path.dirname(process.mainModule.filename);
+			if (fs.lstatSync(base + "/mods/" + modDir).isFile() && !isZip) continue;
 
 			if (this.mods.has(id)) {
 				alert(`Cannot load mod "${modDir}" for having a conflicting ID.`);
