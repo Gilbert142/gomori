@@ -63,7 +63,7 @@ class ModFile {
 	}
 
 	patch() {
-		if (this.type.patch && exists(this.patchPath)) write(this.basilPath, this.unpatchedEncryptedBuffer);
+		if (this.type.patch && exists(this.patchPath) && !exists(this.basilPath)) write(this.basilPath, this.unpatchedEncryptedBuffer);
 		if (this.type.encrypted === "OMORI" && !this.mod.modLoader.plugins.some(({ name }) => name === this.pluginMeta.name)) this.mod.modLoader.plugins.push(this.pluginMeta);
 		if (this.type.patch) {
 			if (this.type.delta) {
