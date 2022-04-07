@@ -1,6 +1,6 @@
 # ⚠️ GOMORI is no longer supported or maintained. ⚠️
 ## Many mods will not function as intended with GOMORI.
-## Please use the new [OneLoader](https://github.com/rphsoftware/OneLoader) software to play OMORI with mods.
+## Consider using alternative mod loaders, such as [OneLoader](https://github.com/rphsoftware/OneLoader), instead.
 
 ----
 
